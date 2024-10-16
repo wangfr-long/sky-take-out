@@ -1,11 +1,14 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
@@ -13,14 +16,17 @@ import com.sky.exception.BaseException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
+import com.sky.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -70,13 +76,33 @@ private JwtProperties jwtProperties;
 
     @Override
     public void addEmployee(Employee employee) {
-        Long currentId = BaseContext.getCurrentId();
+        Long currentId = BaseContext.getCurrentId();//取出线程中存储的id
         employee.setCreateUser(currentId);
         employee.setUpdateUser(currentId);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.insertEmployee(employee);
+    }
+
+    @Override
+    public PageResult selectLimit(EmployeePageQueryDTO pageQueryDTO) {
+         PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
+         Page<Employee>emps= employeeMapper.selectLimit(pageQueryDTO);
+        long total = emps.getTotal();
+        List<Employee> records = emps.getResult();
+        return new PageResult(total,records);
+    }
+
+    @Override
+    public void setStatus(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .updateTime(LocalDateTime.now())
+                .updateUser(BaseContext.getCurrentId())
+                .build();
+        employeeMapper.update(employee);
     }
 
 }
