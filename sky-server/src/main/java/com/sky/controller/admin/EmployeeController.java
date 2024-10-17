@@ -5,6 +5,7 @@ import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
@@ -51,7 +52,7 @@ public class EmployeeController {
 
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.EMP_ID, (long)employee.getId());
+        claims.put(JwtClaimsConstant.EMP_ID, (long) employee.getId());
         String token = JwtUtil.createJWT(
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getAdminTtl(),
@@ -77,21 +78,41 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
+
     @PostMapping
     @ApiOperation("新增员工")
-    public Result<String> addEmployee(@RequestBody Employee employee){
+    public Result<String> addEmployee(@RequestBody Employee employee) {
         employeeService.addEmployee(employee);
         return Result.success();
     }
+
     @GetMapping("/page")
     @ApiOperation("分页查询")
-    public Result selectLimit(EmployeePageQueryDTO pageQueryDTO){
-        PageResult page=  employeeService.selectLimit(pageQueryDTO);
+    public Result selectLimit(EmployeePageQueryDTO pageQueryDTO) {
+        PageResult page = employeeService.selectLimit(pageQueryDTO);
         return Result.success(page);
     }
-    @PostMapping ("/status/{status}")
-    public Result setStatus(@PathVariable Integer status,Long id ){
-        employeeService.setStatus(status,id);
+
+    @PostMapping("/status/{status}")
+    public Result setStatus(@PathVariable Integer status, Long id) {
+        employeeService.setStatus(status, id);
+        return Result.success();
+    }
+    @GetMapping("/{id}")
+    public Result<Employee> selectById(@PathVariable Long id){
+        Employee employee=employeeService.selectById(id);
+        employee.setPassword("******");
+        log.info("员工信息{}",employee.toString());
+        return Result.success(employee);
+    }
+    @PutMapping
+    public Result updateEmp(@RequestBody EmployeeDTO employeeDTO){
+        employeeService.updateEmp(employeeDTO);
+        return Result.success();
+    }
+    @PutMapping("/editPassword")
+    public Result updatePassword(@RequestBody PasswordEditDTO passwordEditDTO){
+        employeeService.updatePassword(passwordEditDTO);
         return Result.success();
     }
 }
