@@ -76,12 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addEmployee(Employee employee) {
-        Long currentId = BaseContext.getCurrentId();//取出线程中存储的id
-        employee.setCreateUser(currentId);
-        employee.setUpdateUser(currentId);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.insertEmployee(employee);
     }
 
@@ -99,8 +94,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = Employee.builder()
                 .status(status)
                 .id(id)
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
                 .build();
         employeeMapper.update(employee);
     }
@@ -115,8 +108,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void updateEmp(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO,employeeDTO);
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
 
