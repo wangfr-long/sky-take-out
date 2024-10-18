@@ -26,16 +26,16 @@ public class GlobalExceptionHandler {
         log.error("异常信息：{}", ex.getMessage());
         return Result.error(ex.getMessage());
     }
-    @ExceptionHandler
-    public Result exceptionHandler(SQLIntegrityConstraintViolationException e){
-        //Duplicate entry 'wfw' for key 'employee.idx_username'
-        if (e.getMessage().contains("Duplicate entry")){
-            String[] split = e.getMessage().split(" ");
-            String username = split[2];
-            return Result.error(username+ MessageConstant.ALREADY_EXISTS);
-        }else {
-            return Result.error(MessageConstant.UNKNOWN_ERROR);
-        }
-    }
+//    @ExceptionHandler
+//    public Result exceptionHandler(SQLIntegrityConstraintViolationException e){
+//        //Duplicate entry 'wfw' for key 'employee.idx_username'
+//        if (e.getMessage().contains("Duplicate entry")){
+//            String[] split = e.getMessage().split(" ");
+//            String username = split[2];
+//            return Result.error(username+ MessageConstant.ALREADY_EXISTS);
+//        }else {
+//            return Result.error(MessageConstant.UNKNOWN_ERROR);
+//        }
+//    }
 
 }
