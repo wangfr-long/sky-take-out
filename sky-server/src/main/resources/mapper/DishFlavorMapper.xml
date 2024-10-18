@@ -8,6 +8,14 @@
             (#{dish_flavor.dishId},#{dish_flavor.name},#{dish_flavor.value})
         </foreach>
     </insert>
+    <delete id="deleteBYDishId">
+        delete
+        from sky_take_out.dish_flavor
+        where dish_flavor.dish_id in
+        <foreach collection="ids" close=")" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </delete>
     <!-- 修复：添加了一个查询语句，用于测试连接是否可用 -->
     <select id="testConnection" resultType="int">
         SELECT 1

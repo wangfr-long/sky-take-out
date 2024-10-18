@@ -1,0 +1,13 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.SetmealDishMapper">
+
+    <select id="getSetmealIdByDishId" resultType="java.lang.Long">
+        select setmeal_id
+        from sky_take_out.setmeal_dish
+        where id in
+        <foreach collection="ids" separator="," open="(" item="id" close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>
