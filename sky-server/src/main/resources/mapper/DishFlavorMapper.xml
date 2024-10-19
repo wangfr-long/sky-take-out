@@ -8,7 +8,7 @@
             (#{dish_flavor.dishId},#{dish_flavor.name},#{dish_flavor.value})
         </foreach>
     </insert>
-    <delete id="deleteBYDishId">
+    <delete id="deleteBYDishIds">
         delete
         from sky_take_out.dish_flavor
         where dish_flavor.dish_id in

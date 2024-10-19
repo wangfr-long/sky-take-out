@@ -2,6 +2,7 @@ package com.sky.mapper;
 
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
+import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
@@ -31,8 +32,12 @@ public interface DishMapper {
     void insertDish(Dish dish);
 
     Page<DishVO> selectLimit(DishPageQueryDTO dishPageQueryDTO);
-    @Select("select * from dish where id=#{id}")
-    Dish selectById(Long id);
+    @Select("select d.*,c.name as categoryName from dish d left outer join sky_take_out.category c on d.category_id = c.id where d.id=#{id}")
+    DishVO selectById(Long id);
 
     void delete(List<Long> ids);
+    @AutoFill(OperationType.UPDATE)
+    void update(Dish dish);
+
+    List<Dish> selectByTypeId(Dish dish);
 }
