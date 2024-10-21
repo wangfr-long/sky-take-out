@@ -8,7 +8,14 @@
                 (#{setmealdish.setmealId},#{setmealdish.dishId},#{setmealdish.name},#{setmealdish.price},#{setmealdish.copies})
             </foreach>
     </insert>
-
+    <delete id="delete">
+        delete
+        from sky_take_out.setmeal_dish
+        where setmeal_id in
+        <foreach collection="ids" close=")" item="id" separator="," open="(">
+        #{id}
+        </foreach>
+    </delete>
     <select id="getSetmealIdByDishId" resultType="java.lang.Long">
         select setmeal_id
         from sky_take_out.setmeal_dish

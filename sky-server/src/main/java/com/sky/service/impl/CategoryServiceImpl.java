@@ -77,5 +77,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categories;
     }
 
+    @Override
+    public List<Category> list(Integer type) {
+     List<Category>categories=categoryMapper.list(type);
+        return categories;
+    }
+
 
 }
