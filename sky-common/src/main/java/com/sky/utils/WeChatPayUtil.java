@@ -131,13 +131,13 @@ public class WeChatPayUtil {
      * @param openid      微信用户的openid
      * @return
      */
-    private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
+    private static String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("appid", weChatProperties.getAppid());
-        jsonObject.put("mchid", weChatProperties.getMchid());
+//        jsonObject.put("appid", WeChatProperties.getAppid());
+//        jsonObject.put("mchid", weChatProperties.getMchid());
         jsonObject.put("description", description);
         jsonObject.put("out_trade_no", orderNum);
-        jsonObject.put("notify_url", weChatProperties.getNotifyUrl());
+//        jsonObject.put("notify_url", weChatProperties.getNotifyUrl());
 
         JSONObject amount = new JSONObject();
         amount.put("total", total.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
@@ -151,7 +151,8 @@ public class WeChatPayUtil {
         jsonObject.put("payer", payer);
 
         String body = jsonObject.toJSONString();
-        return post(JSAPI, body);
+//        return post(JSAPI, body);
+        return null;
     }
 
     /**
@@ -163,7 +164,7 @@ public class WeChatPayUtil {
      * @param openid      微信用户的openid
      * @return
      */
-    public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
+    public static JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         //统一下单，生成预支付交易单
         String bodyAsString = jsapi(orderNum, total, description, openid);
         //解析返回结果
@@ -175,7 +176,7 @@ public class WeChatPayUtil {
             String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
             String nonceStr = RandomStringUtils.randomNumeric(32);
             ArrayList<Object> list = new ArrayList<>();
-            list.add(weChatProperties.getAppid());
+//            list.add(WeChatProperties.getAppid());
             list.add(timeStamp);
             list.add(nonceStr);
             list.add("prepay_id=" + prepayId);
@@ -188,7 +189,7 @@ public class WeChatPayUtil {
             byte[] message = signMessage.getBytes();
 
             Signature signature = Signature.getInstance("SHA256withRSA");
-            signature.initSign(PemUtil.loadPrivateKey(new FileInputStream(new File(weChatProperties.getPrivateKeyFilePath()))));
+//            signature.initSign(PemUtil.loadPrivateKey(new FileInputStream(new File(weChatProperties.getPrivateKeyFilePath()))));
             signature.update(message);
             String packageSign = Base64.getEncoder().encodeToString(signature.sign());
 

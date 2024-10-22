@@ -16,4 +16,6 @@ public interface UserMapper {
     @Insert("insert into sky_take_out.user (openid, name, phone, sex, id_number, avatar, create_time) VALUES " +
             "(#{openid}, #{name}, #{phone}, #{sex}, #{idNumber}, #{avatar}, now())")
     void insert(User user2);
+    @Select("select * from sky_take_out.user where id=#{userId}")
+    User selectById(Long userId);
 }
