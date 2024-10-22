@@ -11,4 +11,6 @@ public interface ShopCartService {
     List<ShoppingCart> select();
 
     void clean();
+
+    void updateOne(ShoppingCartDTO shoppingCartDTO);
 }

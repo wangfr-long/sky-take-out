@@ -18,4 +18,8 @@ public interface ShopCartMapper {
     void update(ShoppingCart shoppingCart);
 @Delete("delete from sky_take_out.shopping_cart where user_id=#{currentId}")
     void clean(Long currentId);
+
+    void updateOne(ShoppingCart shoppingCart);
+    @Delete("delete from sky_take_out.shopping_cart where id=#{id}")
+    void deleteById(Long id);
 }

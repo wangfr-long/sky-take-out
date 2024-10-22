@@ -14,6 +14,23 @@
         </if>
         and user_id=#{userId}
     </update>
+    <update id="updateOne">
+        update sky_take_out.shopping_cart
+        set number=number - 1
+        <where>
+            <if test="dishId!=null">
+                dish_id=#{dishId}
+            </if>
+            <if test="setmealId!=null">
+                setmeal_id=#{setmealId}
+            </if>
+            <if test="dishFlavor!=null">
+                and dish_flavor=#{dishFlavor}
+            </if>
+            and user_id=#{userId}
+        </where>
+    </update>
+
 
     <select id="list" resultType="com.sky.entity.ShoppingCart">
         select * from sky_take_out.shopping_cart
