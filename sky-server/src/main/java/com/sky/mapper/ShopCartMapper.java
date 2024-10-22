@@ -4,6 +4,7 @@ import com.sky.entity.ShoppingCart;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface ShopCartMapper {
     void updateOne(ShoppingCart shoppingCart);
     @Delete("delete from sky_take_out.shopping_cart where id=#{id}")
     void deleteById(Long id);
+    @Select(" select * from sky_take_out.shopping_cart where user_id=#{id}")
+    List<ShoppingCart> selectById(Long id);
 }
