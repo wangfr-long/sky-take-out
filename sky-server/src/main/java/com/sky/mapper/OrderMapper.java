@@ -1,10 +1,14 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import com.sky.vo.OrderStatisticsVO;
+import com.sky.vo.OrderVO;
+import org.apache.ibatis.annotations.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper
 public interface OrderMapper {
@@ -27,4 +31,15 @@ public interface OrderMapper {
      * @param orders
      */
     void update(Orders orders);
+
+    Page<OrderVO> selectHistory(OrdersPageQueryDTO pageQueryDTO);
+    @Select("select * from orders where id=#{id}")
+    Orders selectById(Long id);
+    @Delete("delete from orders where id=#{id}")
+    void deleteById(Long id);
+
+    @Select("select count(*) from orders where status=#{status}")
+    Integer selectStatus(Integer status);
+    @Select("select * from orders where status=#{status} and order_time<#{orderTime}")
+    List<Orders> select(Long status, LocalDateTime orderTime);
 }

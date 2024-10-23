@@ -25,4 +25,6 @@ public interface ShopCartMapper {
     void deleteById(Long id);
     @Select(" select * from sky_take_out.shopping_cart where user_id=#{id}")
     List<ShoppingCart> selectById(Long id);
+
+    void insert(List<ShoppingCart> shoppingCarts);
 }
