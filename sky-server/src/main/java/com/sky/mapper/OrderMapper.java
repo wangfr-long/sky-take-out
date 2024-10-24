@@ -7,6 +7,7 @@ import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderVO;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,4 +43,8 @@ public interface OrderMapper {
     Integer selectStatus(Integer status);
     @Select("select * from orders where status=#{status} and order_time<#{orderTime}")
     List<Orders> select(Long status, LocalDateTime orderTime);
+    @Select("select sum(amount) from orders where DATE_FORMAT(order_time,'%Y-%m-%d')=#{date} and status=6 ")
+    Long sumTurnover(LocalDate date);
+
+    Long count(LocalDate localDate,Integer status);
 }

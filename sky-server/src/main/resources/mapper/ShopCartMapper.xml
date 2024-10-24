@@ -4,11 +4,11 @@
 <mapper namespace="com.sky.mapper.ShopCartMapper">
     <insert id="insert">
         insert into sky_take_out.shopping_cart (name, image, user_id, dish_id, setmeal_id, dish_flavor, amount,
-        create_time)
+        create_time,number)
         VALUES
         <foreach collection="shoppingCarts" separator="," item="sp">
             (#{sp.name}, #{sp.image}, #{sp.userId}, #{sp.dishId}, #{sp.setmealId}, #{sp.dishFlavor}, #{sp.amount},
-            now())
+            now(),#{sp.number})
         </foreach>
     </insert>
 

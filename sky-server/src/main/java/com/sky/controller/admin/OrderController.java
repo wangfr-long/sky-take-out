@@ -19,7 +19,7 @@ public class OrderController {
     private OrderService orderService;
     @GetMapping("/conditionSearch")
     public Result search(OrdersPageQueryDTO ordersPageQueryDTO){
-        PageResult pageResult = orderService.selectHistory(ordersPageQueryDTO);
+       PageResult pageResult= orderService.search(ordersPageQueryDTO);
         return Result.success(pageResult);
     }
     @GetMapping("/statistics")

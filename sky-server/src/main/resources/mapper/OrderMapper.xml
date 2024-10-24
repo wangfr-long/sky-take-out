@@ -58,4 +58,15 @@
     </where>
     order by order_time desc
     </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(id) from orders
+        <where>
+            <if test="localDate!=null">
+                date_format(order_time,'%Y-%m-%d') =#{localDate}
+            </if>
+        <if test="status!=null">
+          and  status=#{status}
+        </if>
+        </where>
+    </select>
 </mapper>

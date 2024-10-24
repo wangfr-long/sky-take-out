@@ -24,6 +24,7 @@ import com.sky.webSocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -265,7 +266,6 @@ public class OrderServiceImpl implements OrderService {
             shoppingCarts.add(shoppingCart);
         });
         shopCartMapper.insert(shoppingCarts);
-        ordeiDetailMapper.delete(id);
     }
 
     @Override
@@ -334,6 +334,23 @@ public class OrderServiceImpl implements OrderService {
         String jsonString = JSON.toJSONString(map);
         webSocketServer.sendToAllClient(jsonString);
         return orders;
+    }
+
+    @Override
+    public PageResult search(OrdersPageQueryDTO pageQueryDTO) {
+        PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
+        pageQueryDTO.setUserId(BaseContext.getCurrentId());
+        Page<OrderVO> orderVOPage = orderMapper.selectHistory(pageQueryDTO);
+        for (OrderVO orderVO : orderVOPage) {
+            List<OrderDetail> orderDetails = ordeiDetailMapper.selectById(orderVO.getId());
+            String orderDishes =new String();
+            for (OrderDetail orderDetail : orderDetails) {
+                orderDishes=orderDishes+orderDetail.getName()+"*"+orderDetail.getNumber();
+            }
+            orderVO.setOrderDishes(orderDishes);
+        }
+        return new PageResult(orderVOPage.getTotal(), orderVOPage.getResult());
+
     }
 
 //    @Override

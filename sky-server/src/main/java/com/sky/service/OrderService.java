@@ -45,5 +45,7 @@ public interface OrderService {
 
     Orders reminder(Long id);
 
+    PageResult search(OrdersPageQueryDTO ordersPageQueryDTO);
+
 //    OrderVO detail(Long id);
 }

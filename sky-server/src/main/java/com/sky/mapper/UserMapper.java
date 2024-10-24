@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDate;
+
 @Mapper
 public interface UserMapper {
     @Select("select * from sky_take_out.user where openid=#{openid}")
@@ -18,4 +20,8 @@ public interface UserMapper {
     void insert(User user2);
     @Select("select * from sky_take_out.user where id=#{userId}")
     User selectById(Long userId);
+    @Select("select count(id) from sky_take_out.user where date_format(create_time,'%Y-%m-%d')<=#{localDate}")
+    Long select(LocalDate localDate);
+    @Select("select count(id) from sky_take_out.user where date_format(create_time,'%Y-%m-%d') =#{localDate}")
+    Long selectByCreatTime(LocalDate localDate);
 }
