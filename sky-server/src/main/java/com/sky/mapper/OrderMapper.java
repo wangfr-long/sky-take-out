@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -43,8 +44,23 @@ public interface OrderMapper {
     Integer selectStatus(Integer status);
     @Select("select * from orders where status=#{status} and order_time<#{orderTime}")
     List<Orders> select(Long status, LocalDateTime orderTime);
-    @Select("select sum(amount) from orders where DATE_FORMAT(order_time,'%Y-%m-%d')=#{date} and status=6 ")
+    @Select("select sum(amount) from orders where DATE_FORMAT(order_time,'%Y-%m-%d')=#{date} and status=5 ")
     Long sumTurnover(LocalDate date);
 
     Long count(LocalDate localDate,Integer status);
-}
+    Double sumByMap(Map map);
+
+    /**
+     * 根据动态条件统计订单数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
+
+    /**
+     * 统计指定时间区间内的销量排名前10
+     * @param begin
+     * @param end
+     * @return
+     */}
+

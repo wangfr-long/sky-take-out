@@ -10,9 +10,11 @@ import com.sky.vo.UserReportVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -47,5 +49,9 @@ public class ReportController {
                              @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
        SalesTop10ReportVO reportVO= reportService.salesTop10(begin,end);
         return Result.success(reportVO);
+    }
+    @GetMapping("/export")
+    public void export(HttpServletResponse response){
+        reportService.export(response);
     }
 }

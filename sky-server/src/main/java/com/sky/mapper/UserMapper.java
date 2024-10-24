@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -24,4 +25,5 @@ public interface UserMapper {
     Long select(LocalDate localDate);
     @Select("select count(id) from sky_take_out.user where date_format(create_time,'%Y-%m-%d') =#{localDate}")
     Long selectByCreatTime(LocalDate localDate);
+    Integer countByMap(Map map);
 }
